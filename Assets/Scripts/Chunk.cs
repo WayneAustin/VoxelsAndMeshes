@@ -27,7 +27,29 @@ public class Chunk
             {
                 for (int z = 0; z < size.z; z++)
                 {
-                    blocks[index] = Block.Filled;
+                    int value = Mathf.CeilToInt(Mathf.PerlinNoise(x / 32f, z / 32f) * 15f + 20f);
+
+                    if (y > value)
+                    {
+                        index++;
+                        continue;
+                    }
+
+                    if (y == value)
+                    {
+                        blocks[index] = Block.Grass;
+                    }
+
+                    if (y < value && y > value - 3)
+                    {
+                        blocks[index] = Block.Dirt;
+                    }
+
+                    if (y <= value - 3)
+                    {
+                        blocks[index] = Block.Stone;
+                    }
+
                     index++;
                 }
             }
@@ -36,7 +58,15 @@ public class Chunk
 
     public IEnumerator GenerateMesh ()
     {
-        yield return null;
+        MeshBuilder builder = new MeshBuilder(position, blocks);
+        builder.Start();
+
+        yield return new WaitUntil(() => builder.Update());
+
+        mesh = builder.GetMesh(ref mesh);
+        ready = true;
+
+        builder = null;
     }
 
 }

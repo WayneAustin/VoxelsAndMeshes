@@ -72,7 +72,9 @@
     <Compile Include="Assets\Scripts\BoardToBits\VoxelData.cs" />
     <Compile Include="Assets\Scripts\BoardToBits\VoxelRender.cs" />
     <Compile Include="Assets\Scripts\Chunk.cs" />
+    <Compile Include="Assets\Scripts\Directions.cs" />
     <Compile Include="Assets\Scripts\MeshBuilder.cs" />
+    <Compile Include="Assets\Scripts\TextureController.cs" />
     <Compile Include="Assets\Scripts\ThreadedProcess.cs" />
     <Compile Include="Assets\Scripts\Vector3Int.cs" />
     <Compile Include="Assets\Scripts\World.cs" />
@@ -96,6 +98,12 @@
     </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>I:/gitroot/MeshBasics/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>I:/gitroot/MeshBasics/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Tilemap.Editor">
+      <HintPath>I:/gitroot/MeshBasics/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>I:/gitroot/MeshBasics/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
@@ -627,29 +635,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Resources\TextureTileset.psd" />
+    <None Include="Assets\Scenes\SampleScene.unity" />
+    <None Include="Assets\Scenes\VoxelMesh.unity" />
+    <None Include="Assets\Scenes\VoxelWorld.unity" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include=".gitignore" />
-    <Content Include="ProjectSettings\ProjectVersion.txt" />
+    <Content Include="Assets\Resources\TextureTileset.png" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <None Include="ProjectSettings\AudioManager.asset" />
-    <None Include="ProjectSettings\ClusterInputManager.asset" />
-    <None Include="ProjectSettings\DynamicsManager.asset" />
-    <None Include="ProjectSettings\EditorBuildSettings.asset" />
-    <None Include="ProjectSettings\EditorSettings.asset" />
-    <None Include="ProjectSettings\GraphicsSettings.asset" />
-    <None Include="ProjectSettings\InputManager.asset" />
-    <None Include="ProjectSettings\NavMeshAreas.asset" />
-    <None Include="ProjectSettings\Physics2DSettings.asset" />
-    <None Include="ProjectSettings\PresetManager.asset" />
-    <None Include="ProjectSettings\ProjectSettings.asset" />
-    <None Include="ProjectSettings\QualitySettings.asset" />
-    <None Include="ProjectSettings\TagManager.asset" />
-    <None Include="ProjectSettings\TimeManager.asset" />
-    <None Include="ProjectSettings\UnityConnectSettings.asset" />
-    <None Include="ProjectSettings\VFXManager.asset" />
-    <None Include="ProjectSettings\XRSettings.asset" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
