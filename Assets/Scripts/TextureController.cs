@@ -66,6 +66,9 @@ public static class TextureController
             return "Grass_Side";
         }
 
+        if (block == Block.WoodPlanks)
+            return "WoodenPlanks";
+
         return "Default";
     }
 }

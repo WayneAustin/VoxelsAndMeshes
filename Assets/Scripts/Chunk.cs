@@ -9,7 +9,7 @@ public class Chunk
     public bool ready = false;
     public Vector3Int position;
 
-    Block[] blocks;
+    public Block[] blocks;
 
     public Chunk (Vector3Int pos)
     {
@@ -27,25 +27,36 @@ public class Chunk
             {
                 for (int z = 0; z < size.z; z++)
                 {
-                    int value = Mathf.CeilToInt(Mathf.PerlinNoise(x / 32f, z / 32f) * 15f + 20f);
+                    int value = Mathf.CeilToInt(
+                        Mathf.PerlinNoise((x + position.x + 84) / 32f, (z + position.z) / 32f) * 15f + 
+                        Mathf.PerlinNoise((x + position.x) / 64f, (z + position.z + 84) / 64f) * 27f + 
+                        Mathf.PerlinNoise((x + position.x - 612) / 16f, (z + position.z) / 16f) * 5f + 
+                        Mathf.PerlinNoise((x + position.x) / 4f, (z + position.z) / 4f + 64) + 
+                        Mathf.PerlinNoise((x + position.x + 8) / 24f, (z + position.z) / 24f - 8) * 12f + 84f
+                    );
 
-                    if (y > value)
+                    if (y + position.y > value)
                     {
+                        if  (y + position.y == value + 7 && Random.Range(0, 15) == 1)
+                        {
+                            StructureGenerator.GenerateWoodenPlatform(position, x, y, z, blocks);
+                        }
+
                         index++;
                         continue;
                     }
 
-                    if (y == value)
+                    if (y + position.y == value)
                     {
                         blocks[index] = Block.Grass;
                     }
 
-                    if (y < value && y > value - 3)
+                    if (y + position.y < value && y + position.y > value - 3)
                     {
                         blocks[index] = Block.Dirt;
                     }
 
-                    if (y <= value - 3)
+                    if (y + position.y <= value - 3)
                     {
                         blocks[index] = Block.Stone;
                     }
@@ -69,4 +80,22 @@ public class Chunk
         builder = null;
     }
 
+    public Block GetBlockAt (int x, int y, int z)
+    {
+        x -= position.x;
+        y -= position.y;
+        z -= position.z;
+        
+        if (IsPointWithinBounds(x,y,z))
+        {
+            return blocks[x * Chunk.size.y * Chunk.size.z + y * Chunk.size.z + z]; 
+        }
+
+        return Block.Air;
+    }
+
+    bool IsPointWithinBounds (int x, int y, int z)
+    {
+        return x >= 0 && y >= 0 && z >= 0 && z < Chunk.size.z && y < Chunk.size.y && x < Chunk.size.x;
+    }
 }

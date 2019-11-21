@@ -28,7 +28,18 @@ public class MeshBuilder : ThreadedProcess
     {
         // Generate faces
         int index = 0;
-        
+
+        Chunk[] neighbours = new Chunk[6];
+        bool[] exists = new bool[6];
+
+        exists[0] = World.instance.GetChunkAt(position.x, position.y, position.z + Chunk.size.z, out neighbours[0]);
+        exists[1] = World.instance.GetChunkAt(position.x + Chunk.size.x, position.y, position.z, out neighbours[1]);
+        exists[2] = World.instance.GetChunkAt(position.x, position.y, position.z - Chunk.size.z, out neighbours[2]);
+        exists[3] = World.instance.GetChunkAt(position.x - Chunk.size.x, position.y, position.z, out neighbours[3]);
+        exists[4] = World.instance.GetChunkAt(position.x, position.y + Chunk.size.y, position.z, out neighbours[4]);
+        exists[5] = World.instance.GetChunkAt(position.x, position.y - Chunk.size.y, position.z, out neighbours[5]);
+
+
         for (int x = 0; x < Chunk.size.x; x++)
         {
             for (int y = 0; y < Chunk.size.y; y++)
@@ -42,7 +53,7 @@ public class MeshBuilder : ThreadedProcess
                         continue;
                     }
 
-                    if (z == 0)
+                    if (z == 0 && (exists [2] == false || neighbours[2].GetBlockAt(position.x + x, position.y + y, position.z + z - 1) == Block.Air))
                     {
                         faces[index] |= (byte)Directions.South;
                         sizeEstimate += 4;
@@ -53,7 +64,7 @@ public class MeshBuilder : ThreadedProcess
                         sizeEstimate += 4;
                     }
 
-                    if (z == Chunk.size.z - 1)
+                    if (z == Chunk.size.z - 1 && (exists[0] == false || neighbours[0].GetBlockAt(position.x + x, position.y + y, position.z + z + 1) == Block.Air))
                     {
                         faces[index] |= (byte)Directions.North;
                         sizeEstimate += 4;
@@ -64,7 +75,7 @@ public class MeshBuilder : ThreadedProcess
                         sizeEstimate += 4;
                     }
 
-                    if (y == 0)
+                    if (y == 0 && (exists[5] == false || neighbours[5].GetBlockAt(position.x + x, position.y + y  - 1, position.z + z) == Block.Air))
                     {
                         faces[index] |= (byte)Directions.Down;
                         sizeEstimate += 4;
@@ -75,7 +86,7 @@ public class MeshBuilder : ThreadedProcess
                         sizeEstimate += 4;
                     }
 
-                    if (y == Chunk.size.y - 1)
+                    if (y == Chunk.size.y - 1 && (exists[4] == false || neighbours[4].GetBlockAt(position.x + x, position.y + y + 1, position.z + z) == Block.Air))
                     {
                         faces[index] |= (byte)Directions.Up;
                         sizeEstimate += 4;
@@ -86,7 +97,7 @@ public class MeshBuilder : ThreadedProcess
                         sizeEstimate += 4;
                     }
 
-                    if (x == 0)
+                    if (x == 0 && (exists[3] == false || neighbours[3].GetBlockAt(position.x + x - 1, position.y + y, position.z + z) == Block.Air))
                     {
                         faces[index] |= (byte)Directions.West;
                         sizeEstimate += 4;
@@ -97,7 +108,7 @@ public class MeshBuilder : ThreadedProcess
                         sizeEstimate += 4;
                     }
 
-                    if (x == Chunk.size.x - 1)
+                    if (x == Chunk.size.x - 1 && (exists[1] == false || neighbours[1].GetBlockAt(position.x + x + 1, position.y + y, position.z + z) == Block.Air))
                     {
                         faces[index] |= (byte)Directions.East;
                         sizeEstimate += 4;
